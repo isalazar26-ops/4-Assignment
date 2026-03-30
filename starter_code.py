@@ -231,6 +231,6 @@ if __name__ == "__main__":
 
     test_sorting_correctness()
 
-    benchmakr_all_datasets()
+    benchmark_all_datasets()
 
     analyze_stablity()
