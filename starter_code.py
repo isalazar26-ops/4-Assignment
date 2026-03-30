@@ -14,94 +14,63 @@ import tracemalloc
 # ============================================================================
 
 def bubble_sort(arr):
-    """
-    Sort array using bubble sort algorithm.
+    """Bubble sort algorithm (stable)."""
+    n = len (arr)
+    a = arr.copy()
+    for i in range(n): 
+        for j in range(0, n - i - 1): 
+            if a[j] > a[j+ 1]:
+                a[j], a[j + 1] = a[j + 1], a[j]
+    return a 
     
-    Bubble sort repeatedly steps through the list, compares adjacent elements,
-    and swaps them if they're in the wrong order.
-    
-    Args:
-        arr (list): List of integers to sort
-    
-    Returns:
-        list: Sorted list in ascending order
-    
-    Example:
-        bubble_sort([64, 34, 25, 12, 22, 11, 90]) returns [11, 12, 22, 25, 34, 64, 90]
-    """
-    # TODO: Implement bubble sort
-    # Hint: Use nested loops - outer loop for passes, inner loop for comparisons
-    # Hint: Compare adjacent elements and swap if left > right
-    
-    pass  # Delete this and write your code
-
 
 def selection_sort(arr):
-    """
-    Sort array using selection sort algorithm.
-    
-    Selection sort divides the list into sorted and unsorted regions, repeatedly
-    selecting the minimum element from unsorted region and moving it to sorted region.
-    
-    Args:
-        arr (list): List of integers to sort
-    
-    Returns:
-        list: Sorted list in ascending order
-    
-    Example:
-        selection_sort([64, 34, 25, 12, 22, 11, 90]) returns [11, 12, 22, 25, 34, 64, 90]
-    """
-    # TODO: Implement selection sort
-    # Hint: Find minimum element in unsorted portion, swap it with first unsorted element
-    
-    pass  # Delete this and write your code
+    """Selection sort algorithm (unstable)."""
+    n = len(arr)
+    a = arr.copy()
+    for i in range(n):
+        min_idx = i
+        for j in range(i + 1, n):
+            if a[j] < a[min_idx]: 
+                min_idx = j
+        a[i], a[min_idx] = a[min_idx], a[i]
+    return a
 
 
 def insertion_sort(arr):
-    """
-    Sort array using insertion sort algorithm.
-    
-    Insertion sort builds the final sorted array one item at a time, inserting
-    each element into its proper position in the already-sorted portion.
-    
-    Args:
-        arr (list): List of integers to sort
-    
-    Returns:
-        list: Sorted list in ascending order
-    
-    Example:
-        insertion_sort([64, 34, 25, 12, 22, 11, 90]) returns [11, 12, 22, 25, 34, 64, 90]
-    """
-    # TODO: Implement insertion sort
-    # Hint: Start from second element, insert it into correct position in sorted portion
-    
-    pass  # Delete this and write your code
+    """Insertion sort algorithm (stable)."""
+    a = arr.copy()
+    for i in range(1, len(a)):
+        key = a[i[
+        j = i - 1
+        while j >= 0 and a[j] > key: 
+            a[j + 1] = key
+        return a
 
 
 def merge_sort(arr):
-    """
-    Sort array using merge sort algorithm.
+    """Merge sort algorithm (stable)."""
+    def merge(left, right):
+        merged = []
+        i = j = 0
+        while i < len(left) and j < len(right):
+            if left[i] <= right[j]:
+                merged.append(left[i])
+                i += 1
+            else: 
+                merged.append(right[j])
+                j += 1
+    merged.extend(left[i:])
+    merged.extend(right[j:])
+    return merged
     
-    Merge sort is a divide-and-conquer algorithm that divides the array into halves,
-    recursively sorts them, and then merges the sorted halves.
-    
-    Args:
-        arr (list): List of integers to sort
-    
-    Returns:
-        list: Sorted list in ascending order
-    
-    Example:
-        merge_sort([64, 34, 25, 12, 22, 11, 90]) returns [11, 12, 22, 25, 34, 64, 90]
-    """
-    # TODO: Implement merge sort
-    # Hint: Base case - if array has 1 or 0 elements, it's already sorted
-    # Hint: Recursive case - split array in half, sort each half, merge sorted halves
-    # Hint: You'll need a helper function to merge two sorted arrays
-    
-    pass  # Delete this and write your code
+    if len(arr) <= 1:
+        return arr.copy()
+
+    mid = len(arr) // 2
+    left_sorted = merge_sort(arr[:mid])
+    right_sorted = merge_sort(arr[mid:])
+    return merge(left_sorted, right_sorted) 
 
 
 # ============================================================================
@@ -109,16 +78,7 @@ def merge_sort(arr):
 # ============================================================================
 
 def demonstrate_stability():
-    """
-    Demonstrate which sorting algorithms are stable by sorting products by price.
-    
-    Creates a list of product dictionaries with prices and original order.
-    Sorts by price and checks if products with same price maintain original order.
-    
-    Returns:
-        dict: Results showing which algorithms preserved order for equal elements
-    """
-    # Sample products with duplicate prices
+    "Test which algorithms preserve order for equal elements."""
     products = [
         {"name": "Widget A", "price": 1999, "original_position": 0},
         {"name": "Gadget B", "price": 999, "original_position": 1},
@@ -127,20 +87,37 @@ def demonstrate_stability():
         {"name": "Widget E", "price": 1999, "original_position": 4},
     ]
     
-    # TODO: Sort products by price using each algorithm
-    # Hint: You'll need to modify your sorting functions to work with dictionaries
-    # Hint: Or extract prices, sort them, and check if stable algorithms maintain original order
-    # Hint: For stable sort: items with price 999 should stay in order (B before D)
-    # Hint: For stable sort: items with price 1999 should stay in order (A before C before E)
-    
-    results = {
+   def is_stable(sorted_products):
+       last_price = None 
+       last_positions = []
+       for p in sorted_products: 
+               if p["price"] != last_price: 
+                   last_price = p["price"]
+                   last_position = [p["original_position"]]
+               else:
+                   last_positions.append(p["original_position"])
+                   if last_positions != sorted(last_positions):
+                       return False 
+        return True 
+
+    results = {}
+    algorithms = {
         "bubble_sort": "Not tested",
         "selection_sort": "Not tested", 
         "insertion_sort": "Not tested",
         "merge_sort": "Not tested"
     }
     
-    # TODO: Test each algorithm and update results dictionary with "Stable" or "Unstable"
+    for name, func in algorithms.items(): 
+        prices = [p["price"] for p in products]
+        sorted_prices = func(prices)
+        sorted_products = []
+        for price in sorted_prices: 
+            for p in products: 
+                if p not in sorted_Products and p["price"] == price:
+                    sorted_products.append(p)
+                    break 
+        results[name] = "Stable" if is_stable(sorted_products) else "Unstable"
     
     return results
 
@@ -196,43 +173,16 @@ def test_sorting_correctness():
 
 
 def benchmark_algorithm(sort_func, data):
-    """
-    Benchmark a sorting algorithm on given data.
-    
-    Args:
-        sort_func: The sorting function to test
-        data: The dataset to sort (will be copied so original isn't modified)
-    
-    Returns:
-        tuple: (execution_time_ms, peak_memory_kb)
-    """
-    # Copy data so we don't modify original
     data_copy = data.copy()
-    
-    # Start memory tracking
     tracemalloc.start()
-    
-    # Measure execution time
     start_time = time.perf_counter()
     sort_func(data_copy)
     end_time = time.perf_counter()
-    
-    # Get peak memory usage
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
-    
-    execution_time_ms = (end_time - start_time) * 1000
-    peak_memory_kb = peak / 1024
-    
-    return execution_time_ms, peak_memory_kb
-
+    return (end - start) * 100, peak / 1024 
 
 def benchmark_all_datasets():
-    """Benchmark all sorting algorithms on all datasets."""
-    print("\n" + "="*70)
-    print("BENCHMARKING SORTING ALGORITHMS")
-    print("="*70 + "\n")
-    
     datasets = {
         "orders.json": ("Order Processing Queue", 50000, 5000),
         "products.json": ("Product Catalog", 100000, 5000),
@@ -248,13 +198,8 @@ def benchmark_all_datasets():
     }
     
     for filename, (description, full_size, sample_size) in datasets.items():
-        print(f"Dataset: {description} ({sample_size:,} element sample)")
-        print("-" * 70)
-        
-        data = load_dataset(filename)
-        # Use first sample_size elements for fair comparison
-        data_sample = data[:sample_size]
-        
+        print(f"Dataset: {description} ({sample_size:,} element sample)")        
+        data = load_dataset(filename)[:sample_size]
         for algo_name, algo_func in algorithms.items():
             try:
                 exec_time, memory = benchmark_algorithm(algo_func, data_sample)
@@ -282,13 +227,10 @@ def analyze_stability():
 
 
 if __name__ == "__main__":
-    print("SORTING ASSIGNMENT - STARTER CODE")
-    print("Implement the sorting functions above, then run tests.\n")
-    
-    # Uncomment these as you complete each part:
-    
-    # test_sorting_correctness()
-    # benchmark_all_datasets()
-    # analyze_stability()
-    
-    print("\n⚠ Uncomment the test functions in the main block to run benchmarks!")
+    print("SORTING ASSIGNMENT - FINAL CODE\n")
+
+    test_sorting_correctness()
+
+    benchmakr_all_datasets()
+
+    analyze_stablity()
